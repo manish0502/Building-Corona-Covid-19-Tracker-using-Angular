@@ -1,7 +1,6 @@
-import { DataFetchService } from './../../services/data-fetch.service';
 import { Component, OnInit } from '@angular/core';
+import { DataFetchService } from '../../services/data-fetch.service';
 import { GlobalDataSummary } from '../../models/global-data';
-import { GoogleChartInterface } from 'ng2-google-charts';
 
 @Component({
   selector: 'app-home',
@@ -17,35 +16,88 @@ export class HomeComponent implements OnInit {
   loading = true;
   globalData: GlobalDataSummary[];
   datatable = [];
-
-
-  constructor(private fetchService:DataFetchService) { }
-
-  
-
-
-
-  ngOnInit(): void {
-    this.fetchService.getGlobalData().subscribe({
-      next:(result)=>{
-        console.log(result);
-        result.forEach(cs => {
-          if (!Number.isNaN(cs.confirmed)) {
-            this.totalActive += cs.active
-            this.totalConfirmed += cs.confirmed
-            this.totalDeaths += cs.deaths
-            this.totalRecovered += cs.active
-          }
-
-        })
+  chart = {
+    PieChart : "PieChart" ,
+    ColumnChart : 'ColumnChart' ,
+    LineChart : "LineChart", 
+    height: 500, 
+    options: {
+      animation:{
+        duration: 1000,
+        easing: 'out',
       },
-      complete : ()=>{
-        this.loading = false;
-      }
-    });
+      is3D: true
+    }  
   }
   
   
+  constructor(private dataService: DataFetchService) { }
+
+
   
+  ngOnInit(): void {
+
+    this.dataService.getGlobalData()
+      .subscribe(
+        {
+          next: (result) => {
+            console.log(result);
+            this.globalData = result;
+            result.forEach(cs => {
+              if (!Number.isNaN(cs.confirmed)) {
+                this.totalActive += cs.active
+                this.totalConfirmed += cs.confirmed
+                this.totalDeaths += cs.deaths
+                this.totalRecovered += cs.active
+              }
+
+            })
+
+            this.initChart('c');
+          }, 
+          complete : ()=>{
+            this.loading = false;
+          }
+        }
+      )
+  }
+
+
+
+  updateChart(input: HTMLInputElement) {
+    console.log(input.value);
+    this.initChart(input.value)
+  }
+
+  initChart(caseType: string) {
+
+    this.datatable = [];
+    // this.datatable.push(["Country", "Cases"])
+    
+    this.globalData.forEach(cs => {
+      let value :number ;
+      if (caseType == 'c')
+        if (cs.confirmed > 2000)
+          value = cs.confirmed
+          
+      if (caseType == 'a')
+        if (cs.active > 2000)
+          value = cs.active
+      if (caseType == 'd')
+        if (cs.deaths > 1000)
+          value = cs.deaths
+          
+      if (caseType == 'r')
+        if (cs.recovered > 2000)
+            value = cs.recovered
+        
+
+        this.datatable.push([
+            cs.country, value
+          ])
+    })
+    console.log(this.datatable);
+
+  }
 
 }

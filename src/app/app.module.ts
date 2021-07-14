@@ -8,7 +8,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { CountriesComponent } from './components/countries/countries.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
-import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 //import { HomeComponent } from './home/home.component';
 
@@ -24,8 +23,9 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    GoogleChartsModule,
     HttpClientModule,
+    GoogleChartsModule
+
    // Ng2GoogleChartsModule
     
   ],
