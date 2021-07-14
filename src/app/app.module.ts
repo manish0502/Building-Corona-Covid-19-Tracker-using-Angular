@@ -8,6 +8,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { CountriesComponent } from './components/countries/countries.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
+import { StatewiseComponent } from './components/statewise/statewise.component';
+import { AgmCoreModule } from '@agm/core';
 
 //import { HomeComponent } from './home/home.component';
 
@@ -18,13 +20,17 @@ import { DashboardCardComponent } from './components/dashboard-card/dashboard-ca
     HomeComponent,
     CountriesComponent,
     DashboardCardComponent,
+    StatewiseComponent,
   //  HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    GoogleChartsModule
+    GoogleChartsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB3S2PaS8UkMLb2QzRnhvjxBTxiFBvEV8c'
+    })
 
    // Ng2GoogleChartsModule
     
